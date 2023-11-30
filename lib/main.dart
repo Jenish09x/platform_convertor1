@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:platform_convertor/screen/dash_screen/view/dash_screen.dart';
+import 'package:platform_convertor/screen/dash_screen/provider/dash_provider.dart';
 import 'package:platform_convertor/screen/setting_screen/provider/setting_screen_provider.dart';
+import 'package:platform_convertor/utils/app_routes.dart';
 import 'package:platform_convertor/utils/theme_data.dart';
 import 'package:platform_convertor/utils/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -15,14 +16,17 @@ void main() {
         ChangeNotifierProvider(
           create: (context) => ThemeProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => DashProvider(),
+        ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, value, child) {
           value.changeTheme();
           return MaterialApp(
-            theme: value.isLight ? lightTheme : darkTheme,
+            theme: value.isLight ? darkTheme : lightTheme,
             debugShowCheckedModeBanner: false,
-            home: const DashScreen(),
+            routes: screen_routes,
           );
         },
       ),

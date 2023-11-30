@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:platform_convertor/screen/call_screen/view/call_screen.dart';
 import 'package:platform_convertor/screen/chat_screen/view/chat_screen.dart';
 import 'package:platform_convertor/screen/contact_screen/view/contact_screen.dart';
+import 'package:platform_convertor/screen/dash_screen/provider/dash_provider.dart';
 import 'package:platform_convertor/screen/setting_screen/view/setting_screen.dart';
+import 'package:provider/provider.dart';
 
 class DashScreen extends StatefulWidget {
   const DashScreen({super.key});
@@ -12,9 +14,13 @@ class DashScreen extends StatefulWidget {
 }
 
 class _DashScreenState extends State<DashScreen> {
-  bool isTrue=false;
+  DashProvider? providerR;
+  DashProvider? providerW;
+
   @override
   Widget build(BuildContext context) {
+    providerR=context.read<DashProvider>();
+    providerW=context.watch<DashProvider>();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: DefaultTabController(
@@ -22,13 +28,10 @@ class _DashScreenState extends State<DashScreen> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            bottom: TabBar(
+            bottom: const TabBar(
               indicatorColor: Colors.deepPurple,
-              unselectedLabelColor:Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white
-                  : Colors.black,
               labelColor: Colors.deepPurple,
-              tabs: const[
+              tabs: [
                 Tab(
                   icon: Icon(
                     Icons.person_add_alt,
@@ -63,9 +66,12 @@ class _DashScreenState extends State<DashScreen> {
             ),
             title: const Text("Platform Converter"),
             actions: [
-              Switch(value: isTrue, onChanged: (value) {
-
-              },),
+              Switch(
+                value: providerR!.isChangeUi,
+                onChanged: (value) {
+                  providerR!.changeUi(value);
+                },
+              ),
               const SizedBox(
                 width: 10,
               ),
