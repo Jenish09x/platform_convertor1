@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:platform_convertor/screen/setting_screen/provider/setting_screen_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/shared_helper.dart';
+import '../../../utils/theme_provider.dart';
+
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
 
@@ -102,21 +105,25 @@ class _SettingScreenState extends State<SettingScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Profile",
+                      "Theme",
                       style: TextStyle(fontSize: 20),
                     ),
                     Text(
-                      "Update Profile Data",
+                      "Change Theme",
                       style: TextStyle(fontSize: 10),
                     )
                   ],
                 ),
                 const Spacer(),
-                Switch(
-                  value: providerR!.isShow,
-                  onChanged: (value) {
-                    providerR!.checkSwitch(value);
-                  },
+                Consumer<ThemeProvider>(
+                  builder: (context, value, child) => Switch(
+                    value: value.isLight,
+                    onChanged: (value1) {
+                      ShareHelper shr = ShareHelper();
+                      shr.setTheme(value1);
+                      value.changeTheme();
+                    },
+                  ),
                 ),
                 const SizedBox(
                   height: 30,
