@@ -36,9 +36,6 @@ class _IosSettingScreenState extends State<IosSettingScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 100,
-            ),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -80,43 +77,43 @@ class _IosSettingScreenState extends State<IosSettingScreen> {
                     children: [
                       Column(
                         children: [
-                          Consumer<ContactProvider>(
+                          Consumer<SettingProvider>(
                             builder: (context, value, child) {
                               return CircleAvatar(
                                 radius: 70,
                                 backgroundColor: CupertinoColors.activeBlue,
-                                backgroundImage: value.path != null
-                                    ? FileImage(File(value.path!))
+                                backgroundImage: value.profileImage != null
+                                    ? FileImage(File(value.profileImage!))
                                     : null,
                               );
                             },
                           ),
-                          Row(mainAxisAlignment: MainAxisAlignment.center,
-                            children:[
-                              CupertinoButton(
-                                  onPressed: () async {
-                                    ImagePicker imgPiker = ImagePicker();
-                                    XFile? image = await imgPiker.pickImage(
-                                        source: ImageSource.gallery);
-                                    // ignore: use_build_context_synchronously
-                                    context
-                                        .read<ContactProvider>()
-                                        .updateImagePath(image!.path);
-                                  },
-                                  child: const Icon(CupertinoIcons.photo)),
-                              CupertinoButton(
-                                  onPressed: () async {
-                                    ImagePicker imgPiker = ImagePicker();
-                                    XFile? image = await imgPiker.pickImage(
-                                        source: ImageSource.camera);
-                                    // ignore: use_build_context_synchronously
-                                    context
-                                        .read<ContactProvider>()
-                                        .updateImagePath(image!.path);
-                                  },
-                                  child: const Icon(CupertinoIcons.camera)),
-                            ]
-                          ),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CupertinoButton(
+                                    onPressed: () async {
+                                      ImagePicker imgPiker = ImagePicker();
+                                      XFile? image = await imgPiker.pickImage(
+                                          source: ImageSource.gallery);
+                                      // ignore: use_build_context_synchronously
+                                      context
+                                          .read<SettingProvider>()
+                                          .updateProfileImage(image!.path);
+                                    },
+                                    child: const Icon(CupertinoIcons.photo)),
+                                CupertinoButton(
+                                    onPressed: () async {
+                                      ImagePicker imgPiker = ImagePicker();
+                                      XFile? image = await imgPiker.pickImage(
+                                          source: ImageSource.camera);
+                                      // ignore: use_build_context_synchronously
+                                      context
+                                          .read<SettingProvider>()
+                                          .updateProfileImage(image!.path);
+                                    },
+                                    child: const Icon(CupertinoIcons.camera)),
+                              ]),
                         ],
                       ),
                       const SizedBox(
@@ -152,10 +149,10 @@ class _IosSettingScreenState extends State<IosSettingScreen> {
                     ],
                   )
                 : Container(
-                    height: 10,
+                    height: 20,
                   ),
             Container(
-              height: 2,
+              height: 1,
               width: MediaQuery.sizeOf(context).width,
               color: CupertinoColors.inactiveGray,
             ),

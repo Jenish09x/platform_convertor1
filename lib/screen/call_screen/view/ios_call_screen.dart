@@ -5,14 +5,14 @@ import 'package:provider/provider.dart';
 
 import '../../contact_screen/provider/contact_provider.dart';
 
-class CallScreenIos extends StatefulWidget {
-  const CallScreenIos({super.key});
+class IosCallScreen extends StatefulWidget {
+  const IosCallScreen({super.key});
 
   @override
-  State<CallScreenIos> createState() => _CallScreenIosState();
+  State<IosCallScreen> createState() => _IosCallScreenState();
 }
 
-class _CallScreenIosState extends State<CallScreenIos> {
+class _IosCallScreenState extends State<IosCallScreen> {
   ContactProvider? providerR;
   ContactProvider? providerW;
   @override

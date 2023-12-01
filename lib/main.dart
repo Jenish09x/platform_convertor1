@@ -6,6 +6,7 @@ import 'package:platform_convertor/screen/contact_screen/provider/contact_provid
 import 'package:platform_convertor/screen/dash_screen/provider/dash_provider.dart';
 import 'package:platform_convertor/screen/setting_screen/provider/setting_screen_provider.dart';
 import 'package:platform_convertor/utils/app_routes.dart';
+import 'package:platform_convertor/utils/ios_theme_data.dart';
 import 'package:platform_convertor/utils/theme_data.dart';
 import 'package:platform_convertor/utils/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -37,10 +38,14 @@ void main() {
             routes: screen_routes,
           );
         },
-      ):CupertinoApp(
-        debugShowCheckedModeBanner: false,
-        routes: ios_screen_routes,
-      )
+      ):Consumer<ThemeProvider>(builder: (context, value, child) {
+        return CupertinoApp(
+          theme: value.isLight ? darkThemeIos : lightThemeIos,
+          debugShowCheckedModeBanner: false,
+          routes: ios_screen_routes,
+        );
+      },
+      ),
     ),
   );
 }
