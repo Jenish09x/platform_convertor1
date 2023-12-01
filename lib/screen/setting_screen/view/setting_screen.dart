@@ -109,7 +109,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                 backgroundImage: value.profileImage!= null
                                     ? FileImage(File(value.profileImage!))
                                     : null,
-                                child: const Icon(Icons.camera_alt),
                               ),
                             ),
                             ),

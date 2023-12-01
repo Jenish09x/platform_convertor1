@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:platform_convertor/screen/contact_screen/model/contact_model.dart';
 class ContactProvider with ChangeNotifier {
   String? path;
   DateTime? date = DateTime.now();
@@ -24,4 +25,31 @@ class ContactProvider with ChangeNotifier {
     path = newPath;
     notifyListeners();
   }
+  List<ContactModel> addDataList = [];
+
+  void changeStep (i) {
+    dashIndex = i;
+    notifyListeners();
+  }
+
+  void addContactData(ContactModel cm) {
+    addDataList.add(cm);
+    notifyListeners();
+  }
+
+  void storeIndex(int index) {
+    infoIndex = index;
+    notifyListeners();
+  }
+
+  void editData(ContactModel c1) {
+    addDataList[infoIndex!] = c1;
+    notifyListeners();
+  }
+
+  void contactDelete() {
+    addDataList.removeAt(infoIndex!);
+    notifyListeners();
+  }
+
 }

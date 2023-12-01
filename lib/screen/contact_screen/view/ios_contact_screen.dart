@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:platform_convertor/screen/contact_screen/model/contact_model.dart';
 import 'package:platform_convertor/screen/contact_screen/provider/contact_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +18,11 @@ ContactProvider? providerR;
 ContactProvider? providerW;
 
 class _IosContactScreenState extends State<IosContactScreen> {
+  TextEditingController txtName = TextEditingController();
+  TextEditingController txtContact = TextEditingController();
+  TextEditingController txtChat = TextEditingController();
+  TextEditingController txtDate = TextEditingController();
+  TextEditingController txtTime = TextEditingController();
   @override
   Widget build(BuildContext context) {
     providerR = context.read<ContactProvider>();
@@ -83,6 +89,7 @@ class _IosContactScreenState extends State<IosContactScreen> {
                     height: 10,
                   ),
                   CupertinoTextFormFieldRow(
+                    controller: txtName,
                     prefix: const Icon(CupertinoIcons.person),
                     placeholder: "Full Name",
                     decoration: BoxDecoration(
@@ -94,6 +101,7 @@ class _IosContactScreenState extends State<IosContactScreen> {
                     ),
                   ),
                   CupertinoTextFormFieldRow(
+                    controller: txtContact,
                     prefix: const Icon(CupertinoIcons.phone),
                     placeholder: "Phone Number",
                     keyboardType: TextInputType.number,
@@ -106,6 +114,7 @@ class _IosContactScreenState extends State<IosContactScreen> {
                     ),
                   ),
                   CupertinoTextFormFieldRow(
+                    controller: txtChat,
                     prefix: const Icon(CupertinoIcons.chat_bubble_text),
                     placeholder: "Chat Conversation",
                     decoration: BoxDecoration(
@@ -190,7 +199,19 @@ class _IosContactScreenState extends State<IosContactScreen> {
                     ),
                     borderRadius: BorderRadius.circular(10),
                     child: const Text("SAVE"),
-                    onPressed: () {},
+                    onPressed: () {
+                      ContactModel cm = ContactModel(
+                        name: txtName.text,
+                        chat: txtChat.text,
+                        phone: txtContact.text,
+                        date: txtDate.text,
+                        time: txtTime.text,
+                        imagePath: providerW!.path,
+                      );
+                      providerR!.updateImagePath(null);
+                      providerR!.addContactData(cm);
+                      providerW!.dashIndex;
+                    },
                   )
                 ],
               ),

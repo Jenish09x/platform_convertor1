@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:platform_convertor/screen/contact_screen/model/contact_model.dart';
 import 'package:platform_convertor/screen/contact_screen/provider/contact_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,9 +19,11 @@ class _ContactScreenState extends State<ContactScreen> {
   TextEditingController txtName = TextEditingController();
   TextEditingController txtContact = TextEditingController();
   TextEditingController txtChat = TextEditingController();
+  TextEditingController txtDate = TextEditingController();
+  TextEditingController txtTime = TextEditingController();
+  GlobalKey<FormState> globalKey = GlobalKey<FormState>();
 
   final _formKey = GlobalKey<FormState>();
-  GlobalKey<FormState> numberKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +107,7 @@ class _ContactScreenState extends State<ContactScreen> {
                 ),
                 TextFormField(
                   // validator: (value) => ,
+                  keyboardType: TextInputType.number,
                   controller: txtContact,
                   decoration: const InputDecoration(
                     prefixIcon:Icon(Icons.call_outlined),
@@ -125,37 +129,55 @@ class _ContactScreenState extends State<ContactScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.date_range),
-                    SizedBox(
-                      width: 10,
+                    const Padding(padding: EdgeInsets.all(10)),
+                    Text(
+                      "Date : ${providerR!.date?.day}/${providerR!.date?.month}/${providerR!.date?.year}",
+                      style: const TextStyle(fontSize: 18),
                     ),
-                    Text("Pick Date"),
+                    IconButton(
+                        onPressed: () async {
+                          DateTime? d1 = await showDatePicker(
+                              context: context,
+                              initialDate: providerR!.date!,
+                              firstDate: DateTime(2001),
+                              lastDate: DateTime(2050));
+                          providerR!.changeDate(d1!);
+                        },
+                        icon: const Icon(Icons.calendar_month))
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.watch_later_outlined),
-                    SizedBox(
-                      width: 10,
+                    const Padding(padding: EdgeInsets.all(10)),
+                    Text(
+                      "Time : ${providerR!.time!.hour}:${providerW!.time!.minute}",
+                      style: const TextStyle(fontSize: 18),
                     ),
-                    Text("Pick Time"),
+                    IconButton(
+                      onPressed: () async {
+                        TimeOfDay? d2 = await showTimePicker(
+                            context: context, initialTime: providerR!.time!);
+                        providerR!.changeTime(d2!);
+                      },
+                      icon: const Icon(Icons.timer_outlined),
+                    ),
                   ],
                 ),
-                // ElevatedButton(onPressed: () {
-                //
-                // }, child: const Text("Save"),),
                 ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
-                    }
+                    ContactModel cm = ContactModel(
+                      name: txtName.text,
+                      chat: txtChat.text,
+                      phone: txtContact.text,
+                      date: txtDate.text,
+                      time: txtTime.text,
+                      imagePath: providerW!.path,
+                    );
+                    providerR!.updateImagePath(null);
+                    providerR!.addContactData(cm);
+                    providerW!.dashIndex;
                   },
                   child: const Text('Submit'),
                 ),
