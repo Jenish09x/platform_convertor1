@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:platform_convertor/screen/contact_screen/provider/contact_provider.dart';
 import 'package:platform_convertor/screen/dash_screen/provider/dash_provider.dart';
 import 'package:platform_convertor/screen/setting_screen/provider/setting_screen_provider.dart';
 import 'package:platform_convertor/utils/app_routes.dart';
@@ -19,8 +23,12 @@ void main() {
         ChangeNotifierProvider(
           create: (context) => DashProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => ContactProvider(),
+        ),
       ],
-      child: Consumer<ThemeProvider>(
+      child: Platform.isIOS
+        ?Consumer<ThemeProvider>(
         builder: (context, value, child) {
           value.changeTheme();
           return MaterialApp(
@@ -29,7 +37,10 @@ void main() {
             routes: screen_routes,
           );
         },
-      ),
+      ):CupertinoApp(
+        debugShowCheckedModeBanner: false,
+        routes: ios_screen_routes,
+      )
     ),
   );
 }

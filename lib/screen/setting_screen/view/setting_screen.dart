@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:platform_convertor/screen/setting_screen/provider/setting_screen_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -60,12 +63,57 @@ class _SettingScreenState extends State<SettingScreen> {
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const CircleAvatar(
-                          radius: 60,
-                          child: Icon(
-                            Icons.camera_alt_outlined,
-                            size: 30,
-                          ),
+                        // const CircleAvatar(
+                        //   radius: 60,
+                        //   child: Icon(
+                        //     Icons.camera_alt_outlined,
+                        //     size: 30,
+                        //   ),
+                        // ),
+                        Column(
+                          children: [
+                            Consumer<SettingProvider>(builder: (context, value, child) => InkWell(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => BottomSheet(
+                                    onClosing: () {},
+                                    builder: (context) => SizedBox(
+                                      height: 200,
+                                      child:  Row(mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          IconButton(
+                                              onPressed: () async {
+                                                ImagePicker imgPiker = ImagePicker();
+                                                XFile? image = await imgPiker.pickImage(
+                                                    source: ImageSource.gallery);
+                                                providerR!.updateProfileImage(image!.path);
+                                              },
+                                              icon: const Icon(Icons.image)),
+                                          IconButton(
+                                              onPressed: () async {
+                                                ImagePicker imgPiker = ImagePicker();
+                                                XFile? image = await imgPiker.pickImage(
+                                                    source: ImageSource.camera);
+                                                providerR!.updateProfileImage(image!.path);
+                                              },
+                                              icon: const Icon(Icons.camera_alt)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: CircleAvatar(
+                                radius: 70,
+                                backgroundImage: value.profileImage!= null
+                                    ? FileImage(File(value.profileImage!))
+                                    : null,
+                                child: const Icon(Icons.camera_alt),
+                              ),
+                            ),
+                            ),
+                          ],
                         ),
                         const TextField(
                           keyboardType: TextInputType.emailAddress,
