@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:platform_convertor/screen/setting_screen/provider/setting_screen_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../utils/shared_helper.dart';
 import '../../../utils/theme_provider.dart';
@@ -18,6 +19,9 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   SettingProvider? providerR;
   SettingProvider? providerW;
+
+  TextEditingController txtName = TextEditingController();
+  TextEditingController txtBio = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -63,13 +67,6 @@ class _SettingScreenState extends State<SettingScreen> {
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // const CircleAvatar(
-                        //   radius: 60,
-                        //   child: Icon(
-                        //     Icons.camera_alt_outlined,
-                        //     size: 30,
-                        //   ),
-                        // ),
                         Column(
                           children: [
                             Consumer<SettingProvider>(builder: (context, value, child) => InkWell(
@@ -114,16 +111,18 @@ class _SettingScreenState extends State<SettingScreen> {
                             ),
                           ],
                         ),
-                        const TextField(
+                         TextField(
+                          controller: txtName,
                           keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               label: Center(child: Text("Enter Your Name")),
                               enabledBorder: InputBorder.none),
                           enabled: true,
                         ),
-                        const TextField(
+                         TextField(
+                           controller: txtBio,
                           keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               label: Center(child: Text("Enter Your Bio")),
                               enabledBorder: InputBorder.none),
                         ),
@@ -131,9 +130,14 @@ class _SettingScreenState extends State<SettingScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             TextButton(
-                                onPressed: () {}, child: const Text("Save")),
+                                onPressed: () async {
+                                  final SharedPreferences shr = await SharedPreferences.getInstance();
+                                  shr.setString("name", txtName.text);
+                                }, child: const Text("Save")),
                             TextButton(
-                                onPressed: () {}, child: const Text("Clear")),
+                                onPressed: () {
+
+                                }, child: const Text("Clear")),
                           ],
                         )
                       ],
