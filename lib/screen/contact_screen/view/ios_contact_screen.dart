@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:platform_convertor/screen/contact_screen/model/contact_model.dart';
 import 'package:platform_convertor/screen/contact_screen/provider/contact_provider.dart';
-import 'package:platform_convertor/screen/dash_screen/provider/dash_provider.dart';
 import 'package:platform_convertor/utils/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +24,9 @@ class _IosContactScreenState extends State<IosContactScreen> {
   TextEditingController txtChat = TextEditingController();
   TextEditingController txtDate = TextEditingController();
   TextEditingController txtTime = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     providerR = context.read<ContactProvider>();
@@ -43,6 +45,7 @@ class _IosContactScreenState extends State<IosContactScreen> {
       ),
       child: SafeArea(
         child: Form(
+          key: _formKey,
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(4),
@@ -97,6 +100,13 @@ class _IosContactScreenState extends State<IosContactScreen> {
                     height: 10,
                   ),
                   CupertinoTextFormFieldRow(
+                    validator: (value) {
+                      if(value==null || value.isEmpty)
+                      {
+                        return "Please enter a name";
+                      }
+                      return null;
+                    },
                     controller: txtName,
                     prefix: const Icon(CupertinoIcons.person),
                     placeholder: "Full Name",
@@ -109,6 +119,13 @@ class _IosContactScreenState extends State<IosContactScreen> {
                     ),
                   ),
                   CupertinoTextFormFieldRow(
+                    validator: (value) {
+                      if(value==null || value.isEmpty)
+                      {
+                        return "Please enter a phone";
+                      }
+                      return null;
+                    },
                     controller: txtContact,
                     prefix: const Icon(CupertinoIcons.phone),
                     placeholder: "Phone Number",
@@ -208,17 +225,20 @@ class _IosContactScreenState extends State<IosContactScreen> {
                     borderRadius: BorderRadius.circular(10),
                     child: const Text("SAVE"),
                     onPressed: () {
-                      ContactModel cm = ContactModel(
-                        name: txtName.text,
-                        chat: txtChat.text,
-                        phone: txtContact.text,
-                        date: txtDate.text,
-                        time: txtTime.text,
-                        imagePath: providerW!.path,
-                      );
-                      providerR!.updateImagePath(null);
-                      providerR!.addContactData(cm);
-                      providerW!.dashIndex;
+                      if(_formKey.currentState!.validate())
+                      {
+                        ContactModel cm = ContactModel(
+                          name: txtName.text,
+                          chat: txtChat.text,
+                          phone: txtContact.text,
+                          date: txtDate.text,
+                          time: txtTime.text,
+                          imagePath: providerW!.path,
+                        );
+                        providerR!.updateImagePath(null);
+                        providerR!.addContactData(cm);
+                        providerW!.dashIndex;
+                      }
                     },
                   )
                 ],

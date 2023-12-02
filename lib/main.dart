@@ -14,34 +14,35 @@ import 'package:provider/provider.dart';
 void main() {
   runApp(
     MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => SettingProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ThemeProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => DashProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ContactProvider(),
-        ),
-      ],
-      child: Consumer<ThemeProvider>(
-              builder: (context, value, child) {
-                value.changeTheme();
-                return context.read<ThemeProvider>().changeUI?MaterialApp(
-                  theme: value.isLight ? darkTheme : lightTheme,
-                  debugShowCheckedModeBanner: false,
-                  routes: screen_routes,
-                ) : CupertinoApp(
-                theme: value.isLight ? darkThemeIos : lightThemeIos,
-                debugShowCheckedModeBanner: false,
-                routes: ios_screen_routes,
-                );
-              },
-            )
-    ),
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => SettingProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => ThemeProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => DashProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => ContactProvider(),
+          ),
+        ],
+        child: Consumer<ThemeProvider>(
+          builder: (context, value, child) {
+            value.changeTheme();
+            return context.read<ThemeProvider>().changeUI
+                ? CupertinoApp(
+                    theme: value.isLight ? darkThemeIos : lightThemeIos,
+                    debugShowCheckedModeBanner: false,
+                    routes: ios_screen_routes,
+                  )
+                : MaterialApp(
+                    theme: value.isLight ? darkTheme : lightTheme,
+                    debugShowCheckedModeBanner: false,
+                    routes: screen_routes,
+                  );
+          },
+        )),
   );
 }
