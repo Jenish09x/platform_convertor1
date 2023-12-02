@@ -28,26 +28,20 @@ void main() {
           create: (context) => ContactProvider(),
         ),
       ],
-      child: Platform.isAndroid
-          ? Consumer<ThemeProvider>(
+      child: Consumer<ThemeProvider>(
               builder: (context, value, child) {
                 value.changeTheme();
-                return MaterialApp(
+                return context.read<ThemeProvider>().changeUI?MaterialApp(
                   theme: value.isLight ? darkTheme : lightTheme,
                   debugShowCheckedModeBanner: false,
                   routes: screen_routes,
+                ) : CupertinoApp(
+                theme: value.isLight ? darkThemeIos : lightThemeIos,
+                debugShowCheckedModeBanner: false,
+                routes: ios_screen_routes,
                 );
               },
             )
-          : Consumer<ThemeProvider>(
-              builder: (context, value, child) {
-                return CupertinoApp(
-                  theme: value.isLight ? darkThemeIos : lightThemeIos,
-                  debugShowCheckedModeBanner: false,
-                  routes: ios_screen_routes,
-                );
-              },
-            ),
     ),
   );
 }

@@ -29,7 +29,6 @@ class _IosDashScreenState extends State<IosDashScreen> {
     providerW = context.watch<DashProvider>();
     providerR = context.read<DashProvider>();
     return CupertinoTabScaffold(
-
       tabBar: CupertinoTabBar(
         onTap: (value) {
           int i =value;

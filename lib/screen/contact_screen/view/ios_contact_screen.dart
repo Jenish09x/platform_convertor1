@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:platform_convertor/screen/contact_screen/model/contact_model.dart';
 import 'package:platform_convertor/screen/contact_screen/provider/contact_provider.dart';
+import 'package:platform_convertor/screen/dash_screen/provider/dash_provider.dart';
+import 'package:platform_convertor/utils/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class IosContactScreen extends StatefulWidget {
@@ -28,9 +30,15 @@ class _IosContactScreenState extends State<IosContactScreen> {
     providerR = context.read<ContactProvider>();
     providerW = context.watch<ContactProvider>();
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text(
+      navigationBar:  CupertinoNavigationBar(
+        middle: const Text(
           "Platform Converter",
+        ),
+        trailing:  CupertinoSwitch(
+          value: context.read<ThemeProvider>().changeUI,
+          onChanged: (value) {
+            context.read<ThemeProvider>().changeAppUi(value);
+          },
         ),
       ),
       child: SafeArea(

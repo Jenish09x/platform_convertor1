@@ -4,6 +4,7 @@ import 'package:platform_convertor/screen/chat_screen/view/chat_screen.dart';
 import 'package:platform_convertor/screen/contact_screen/view/contact_screen.dart';
 import 'package:platform_convertor/screen/dash_screen/provider/dash_provider.dart';
 import 'package:platform_convertor/screen/setting_screen/view/setting_screen.dart';
+import 'package:platform_convertor/utils/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class DashScreen extends StatefulWidget {
@@ -66,10 +67,14 @@ class _DashScreenState extends State<DashScreen> {
             ),
             title: const Text("Platform Converter"),
             actions: [
-              Switch(
-                value: providerR!.isChangeUi,
-                onChanged: (value) {
-                  providerR!.changeUi(value);
+              Consumer(
+                builder: (BuildContext context, value, Widget? child) {
+                  return Switch(
+                    value: context.read<ThemeProvider>().changeUI,
+                    onChanged: (value) {
+                      context.read< ThemeProvider>().changeAppUi(value);
+                    },
+                  );
                 },
               ),
               const SizedBox(
